@@ -1,58 +1,43 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31612.314
+MinimumVisualStudioVersion = 17.0.31612.314
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5E7D0FEE-F9B4-4F1B-B32B-2E1749B22353}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		Directory.Build.props = Directory.Build.props
+		global.json = global.json
 		LICENSE = LICENSE
-		tools\make_certs.bat = tools\make_certs.bat
-		NerdyDuck.Logging-50x50.png = NerdyDuck.Logging-50x50.png
-		NerdyDuck.snk = NerdyDuck.snk
+		nuget.config = nuget.config
 		README.md = README.md
-		tools\SignAssembly.targets = tools\SignAssembly.targets
-		tools\TransformResW2X.targets = tools\TransformResW2X.targets
-		tools\TransformT4OnBuild.targets = tools\TransformT4OnBuild.targets
+		THIRD-PARTY-NOTICES.TXT = THIRD-PARTY-NOTICES.TXT
+		Versions.props = Versions.props
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{70061BA5-5173-48A6-8D0C-098142608982}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{70061BA5-5173-48A6-8D0C-098142608982}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{47976FAC-8B20-46BD-8A00-0818AF80F9C3}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{47976FAC-8B20-46BD-8A00-0818AF80F9C3}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DocDeploy", "DocDeploy", "{CA475D9F-225C-45A7-B600-ECC7908A7881}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "media", "media", "{CA475D9F-225C-45A7-B600-ECC7908A7881}"
+	ProjectSection(SolutionItems) = preProject
+		media\NerdyDuck.Logging-64x64.png = media\NerdyDuck.Logging-64x64.png
+		media\NerdyDuck.Logging.svg = media\NerdyDuck.Logging.svg
+	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{92F60D22-FAC2-433C-BBFC-847C69B9AE5C}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{92F60D22-FAC2-433C-BBFC-847C69B9AE5C}"
+	ProjectSection(SolutionItems) = preProject
+		shared\NerdyDuck.Logging.snk = shared\NerdyDuck.Logging.snk
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggingUniversal", "src\LoggingUniversal\LoggingUniversal.csproj", "{7B98324E-9D82-41A6-8246-2AED93F7FA6D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logging", "src\Logging\Logging.csproj", "{7B98324E-9D82-41A6-8246-2AED93F7FA6D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Debug|ARM = Debug|ARM
-		Debug|x64 = Debug|x64
-		Debug|x86 = Debug|x86
-		Release|Any CPU = Release|Any CPU
-		Release|ARM = Release|ARM
-		Release|x64 = Release|x64
-		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7B98324E-9D82-41A6-8246-2AED93F7FA6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7B98324E-9D82-41A6-8246-2AED93F7FA6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7B98324E-9D82-41A6-8246-2AED93F7FA6D}.Debug|ARM.ActiveCfg = Debug|ARM
-		{7B98324E-9D82-41A6-8246-2AED93F7FA6D}.Debug|ARM.Build.0 = Debug|ARM
-		{7B98324E-9D82-41A6-8246-2AED93F7FA6D}.Debug|x64.ActiveCfg = Debug|x64
-		{7B98324E-9D82-41A6-8246-2AED93F7FA6D}.Debug|x64.Build.0 = Debug|x64
-		{7B98324E-9D82-41A6-8246-2AED93F7FA6D}.Debug|x86.ActiveCfg = Debug|x86
-		{7B98324E-9D82-41A6-8246-2AED93F7FA6D}.Debug|x86.Build.0 = Debug|x86
-		{7B98324E-9D82-41A6-8246-2AED93F7FA6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7B98324E-9D82-41A6-8246-2AED93F7FA6D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7B98324E-9D82-41A6-8246-2AED93F7FA6D}.Release|ARM.ActiveCfg = Release|ARM
-		{7B98324E-9D82-41A6-8246-2AED93F7FA6D}.Release|ARM.Build.0 = Release|ARM
-		{7B98324E-9D82-41A6-8246-2AED93F7FA6D}.Release|x64.ActiveCfg = Release|x64
-		{7B98324E-9D82-41A6-8246-2AED93F7FA6D}.Release|x64.Build.0 = Release|x64
-		{7B98324E-9D82-41A6-8246-2AED93F7FA6D}.Release|x86.ActiveCfg = Release|x86
-		{7B98324E-9D82-41A6-8246-2AED93F7FA6D}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
