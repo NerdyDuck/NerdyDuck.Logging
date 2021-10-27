@@ -1,140 +1,122 @@
 ﻿#region Copyright
 /*******************************************************************************
- * <copyright file="LogbookFilter.cs" owner="Daniel Kopp">
- * Copyright 2015-2016 Daniel Kopp
+ * NerdyDuck.Logging - Base classes for customized logging for .NET.
+ * 
+ * The MIT License (MIT)
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) Daniel Kopp, dak@nerdyduck.de
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * All rights reserved.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * </copyright>
- * <author name="Daniel Kopp" email="dak@nerdyduck.de" />
- * <assembly name="NerdyDuck.Logging">
- * Base classes for customized logging for .NET.
- * </assembly>
- * <file name="LogbookFilter.cs" date="2016-04-08">
- * The base class for filters that decide if a log entry is sent to a
- * LogbookListener(Of T).
- * </file>
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  ******************************************************************************/
 #endregion
 
+using System.Globalization;
 using NerdyDuck.CodedExceptions;
 using NerdyDuck.ParameterValidation;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace NerdyDuck.Logging
+namespace NerdyDuck.Logging;
+
+/// <summary>
+/// The base class for filters that decide if a log entry is sent to a <see cref="LogbookListener{T}"/>.
+/// </summary>
+/// <typeparam name="T">The type of the data object that contains the data to log. Must be derived from <see cref="LogEntryBase" />.</typeparam>
+public abstract class LogbookFilter<T> : LogbookComponent, ISynchronizable where T : LogEntryBase
 {
 	/// <summary>
-	/// The base class for filters that decide if a log entry is sent to a <see cref="LogbookListener{T}"/>.
+	/// Gets a value indicating if the properties and methods of the <see cref="LogbookFilter{T}"/> are thread-safe.
 	/// </summary>
-	/// <typeparam name="T">The type of the data object that contains the data to log. Must be derived from <see cref="LogEntryBase" />.</typeparam>
-	public abstract class LogbookFilter<T> : LogbookComponent, ISynchronizable where T : LogEntryBase
+	/// <value>The default implementation returns <see langword="true"/>.</value>
+	public virtual bool IsSynchronized
 	{
-		#region Properties
-		/// <summary>
-		/// Gets a value indicating if the properties and methods of the <see cref="LogbookFilter{T}"/> are thread-safe.
-		/// </summary>
-		/// <value>The default implementation returns <see langword="true"/>.</value>
-		public virtual bool IsSynchronized
-		{
-			get { return true; }
-		}
+		get { return true; }
+	}
 
-		/// <summary>
-		/// Gets an object used to synchronize access to the <see cref="LogbookFilter{T}"/>.
-		/// </summary>
-		/// <value>Always returns the current instance.</value>
-		public object SyncRoot
-		{
-			get { return this; }
-		}
-		#endregion
+	/// <summary>
+	/// Gets an object used to synchronize access to the <see cref="LogbookFilter{T}"/>.
+	/// </summary>
+	/// <value>Always returns the current instance.</value>
+	public object SyncRoot
+	{
+		get { return this; }
+	}
 
-		#region Constructors
-		/// <summary>
-		/// Initializes a new instance of the <see cref="LogbookFilter{T}"/> class.
-		/// </summary>
-		protected LogbookFilter()
-			: base()
-		{
-		}
+	/// <summary>
+	/// Initializes a new instance of the <see cref="LogbookFilter{T}"/> class.
+	/// </summary>
+	protected LogbookFilter()
+		: base()
+	{
+	}
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="LogbookFilter{T}"/> class with the specified name.
-		/// </summary>
-		/// <param name="name">The name of the <see cref="LogbookFilter{T}"/>.</param>
-		protected LogbookFilter(string name)
-			: base(name)
-		{
-		}
-		#endregion
+	/// <summary>
+	/// Initializes a new instance of the <see cref="LogbookFilter{T}"/> class with the specified name.
+	/// </summary>
+	/// <param name="name">The name of the <see cref="LogbookFilter{T}"/>.</param>
+	protected LogbookFilter(string name)
+		: base(name)
+	{
+	}
 
-		#region Destructor
-		/// <summary>
-		/// Destructor.
-		/// </summary>
-		~LogbookFilter()
-		{
-			Dispose(false);
-		}
-		#endregion
+	/// <summary>
+	/// Destructor.
+	/// </summary>
+	~LogbookFilter()
+	{
+		Dispose(false);
+	}
 
-		#region Public methods
-		#region ShouldLog
-		/// <summary>
-		/// When overridden in a derived class, determines whether the logbook listener should log the event.
-		/// </summary>
-		/// <param name="logEntry">The data to log.</param>
-		/// <param name="state">A state object.</param>
-		/// <returns><see langword="true"/> to log the specified event; otherwise, <see langword="false"/>.</returns>
-		public abstract bool ShouldLog(T logEntry, object state);
-		#endregion
-		#endregion
+	/// <summary>
+	/// When overridden in a derived class, determines whether the logbook listener should log the event.
+	/// </summary>
+	/// <param name="logEntry">The data to log.</param>
+	/// <param name="state">A state object.</param>
+	/// <returns><see langword="true"/> to log the specified event; otherwise, <see langword="false"/>.</returns>
+	public abstract bool ShouldLog(T logEntry, object state);
 
-		#region Private methods
-		#region SyncShouldLog
-		/// <summary>
-		/// Helper method to synchronize ShouldLog(T,object).
-		/// </summary>
-		/// <param name="logEntry">The data to log.</param>
-		/// <param name="state">A state object.</param>
-		/// <returns><see langword="true"/> to log the specified event; otherwise, <see langword="false"/>.</returns>
-		/// <exception cref="CodedException">Calling ShouldLog(T) failed.</exception>
-		internal bool SyncShouldLog(T logEntry, object state)
+	/// <summary>
+	/// Helper method to synchronize ShouldLog(T,object).
+	/// </summary>
+	/// <param name="logEntry">The data to log.</param>
+	/// <param name="state">A state object.</param>
+	/// <returns><see langword="true"/> to log the specified event; otherwise, <see langword="false"/>.</returns>
+	/// <exception cref="CodedException">Calling ShouldLog(T) failed.</exception>
+	internal bool SyncShouldLog(T logEntry, object state)
+	{
+		try
 		{
-			try
+			if (IsSynchronized)
 			{
-				if (IsSynchronized)
-				{
-					return ShouldLog(logEntry, state);
-				}
+				return ShouldLog(logEntry, state);
+			}
 
-				bool b;
-				lock (SyncRoot)
-				{
-					b = ShouldLog(logEntry, state);
-				}
-				return b;
-			}
-			catch (Exception ex) when (ex.IsCodedException())
+			bool b;
+			lock (SyncRoot)
 			{
-				throw new CodedException(Errors.CreateHResult(ErrorCodes.LogbookFilter_SyncShouldLog_Failed), string.Format(Properties.Resources.LogbookFilter_SyncShouldLog_Failed, Name, GetType().Name), ex);
+				b = ShouldLog(logEntry, state);
 			}
+			return b;
 		}
-		#endregion
-		#endregion
+		catch (Exception ex) when (ex.IsCodedException())
+		{
+			throw new CodedException(HResult.Create(ErrorCodes.LogbookFilter_SyncShouldLog_Failed), string.Format(CultureInfo.CurrentCulture, TextResources.LogbookFilter_SyncShouldLog_Failed, Name, GetType().Name), ex);
+		}
 	}
 }

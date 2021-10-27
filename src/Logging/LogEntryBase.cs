@@ -1,83 +1,62 @@
 ﻿#region Copyright
 /*******************************************************************************
- * <copyright file="LogEntryBase.cs" owner="Daniel Kopp">
- * Copyright 2015-2016 Daniel Kopp
+ * NerdyDuck.Logging - Base classes for customized logging for .NET.
+ * 
+ * The MIT License (MIT)
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) Daniel Kopp, dak@nerdyduck.de
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * All rights reserved.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * </copyright>
- * <author name="Daniel Kopp" email="dak@nerdyduck.de" />
- * <assembly name="NerdyDuck.Logging">
- * Base classes for customized logging for .NET.
- * </assembly>
- * <file name="LogEntryBase.cs" date="2016-04-06">
- * The base class for all types representing a log entry.
- * </file>
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  ******************************************************************************/
 #endregion
 
-using System;
+namespace NerdyDuck.Logging;
 
-namespace NerdyDuck.Logging
+/// <summary>
+/// The base class for all types representing a log entry.
+/// </summary>
+[Serializable]
+public abstract class LogEntryBase
 {
 	/// <summary>
-	/// The base class for all types representing a log entry.
+	/// The serialization namespace for all classes in the NerdyDuck.Logging library.
 	/// </summary>
-#if WINDOWS_DESKTOP
-	[Serializable]
-#endif
-	public abstract class LogEntryBase
-	{
-		#region Constants
-		/// <summary>
-		/// The serialization namespace for all classes in the NerdyDuck.Logging library.
-		/// </summary>
-		public const string Namespace = "http://www.nerdyduck.de/Logging/";
-		#endregion
+	public const string Namespace = "http://www.nerdyduck.de/Logging/";
 
-		#region Private fields
-		private DateTimeOffset mTimestamp;
-		#endregion
+	/// <summary>
+	/// Gets the date and time when the log entry was created.
+	/// </summary>
+	/// <value>A <see cref="DateTimeOffset"/> structure.</value>
+	public DateTimeOffset Timestamp { get; private set; }
 
-		#region Properties
-		/// <summary>
-		/// Gets the date and time when the log entry was created.
-		/// </summary>
-		/// <value>A <see cref="DateTimeOffset"/> structure.</value>
-		public DateTimeOffset Timestamp
-		{
-			get { return mTimestamp; }
-		}
-		#endregion
+	/// <summary>
+	/// Initializes a new instance of the <see cref="LogEntryBase"/> class.
+	/// </summary>
+	/// <remarks><see cref="Timestamp"/> is set to <see cref="DateTimeOffset.Now"/>.</remarks>
+	protected LogEntryBase() => Timestamp = DateTimeOffset.Now;
 
-		#region Constructors
-		/// <summary>
-		/// Initializes a new instance of the <see cref="LogEntryBase"/> class.
-		/// </summary>
-		/// <remarks><see cref="Timestamp"/> is set to <see cref="DateTimeOffset.Now"/>.</remarks>
-		protected LogEntryBase()
-		{
-			mTimestamp = DateTimeOffset.Now;
-		}
-
-		/// <summary>
-		/// Initializes a new instance of the <see cref="LogEntryBase"/> class with the specified date and time.
-		/// </summary>
-		/// <param name="timestamp">The date and time when the log entry was created.</param>
-		/// <remarks><see cref="Timestamp"/> receives the value of <paramref name="timestamp"/>.</remarks>
-		protected LogEntryBase(DateTimeOffset timestamp)
-		{
-			mTimestamp = timestamp;
-		}
-		#endregion
-	}
+	/// <summary>
+	/// Initializes a new instance of the <see cref="LogEntryBase"/> class with the specified date and time.
+	/// </summary>
+	/// <param name="timestamp">The date and time when the log entry was created.</param>
+	/// <remarks><see cref="Timestamp"/> receives the value of <paramref name="timestamp"/>.</remarks>
+	protected LogEntryBase(DateTimeOffset timestamp) => Timestamp = timestamp;
 }
